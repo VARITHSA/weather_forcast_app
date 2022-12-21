@@ -6,8 +6,9 @@ void main() {
   runApp(const MyApp());
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.red,
+      statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
     ),
   );
 }
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
