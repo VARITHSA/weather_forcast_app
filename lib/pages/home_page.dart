@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_forcast_app/utils/weather_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,15 +33,21 @@ class _HomePageState extends State<HomePage> {
     return await Geolocator.getCurrentPosition();
   }
 
-  @override
-  void initState() {
-    _getPosition().then((value) {
-      lat = '${value.latitude}';
-      long = '${value.longitude}';
-      setState(() {
-        locationMessage = 'Latitde is $lat, longitude is $long';
-      });
-    });
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   _getPosition().then((value) {
+  //     data = client.getData(value.latitude, value.longitude);
+  //   });
+  // }
+
+  var client = WeatherData();
+  var data;
+
+  info() async {
+    var position = await _getPosition();
+    data = await client.getData(28.6, 77.2);
+    return data;
   }
 
   @override
@@ -51,22 +58,27 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
       ),
       extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/images/redweather.png',
-              fit: BoxFit.fitHeight,
-            ),
-            Positioned(
-              top: 250,
-              child: Center(
-                child: Text(locationMessage),
+      body: FutureBuilder(
+          future: info(),
+          builder: ((context, snapshot) {
+            return SingleChildScrollView(
+              child: Stack(
+                children: [
+                  Image.asset(
+                    'assets/images/redweather.png',
+                    fit: BoxFit.fitHeight,
+                  ),
+                  Positioned(
+                    top: 250,
+                    child: Center(
+                        child: Text(
+                      '${data?.temp}',
+                    )),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          })),
     );
   }
 }
