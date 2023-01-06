@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+
 double? lat;
 double? long;
 
@@ -19,10 +20,26 @@ Future<void> getlocation() async {
       desiredAccuracy: LocationAccuracy.high);
   lat = position.latitude;
   long = position.longitude;
+  print(lat);
+  print(long);
+
+  getData();
+}
+
+@override
+void initState() {
+  getlocation();
 }
 
 void getData() async {
-  Response response = get('https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=$api');
+
+  Response response = await get(Uri.parse(
+      'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$api'));
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    print(response.statusCode);
+  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -41,6 +58,7 @@ class _HomePageState extends State<HomePage> {
         child: ElevatedButton(
             child: const Text('Click'),
             onPressed: () {
+              
               // getlocation();
             }),
       ),
