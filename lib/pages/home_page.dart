@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
+import 'package:weather_forcast_app/utils/network_helper.dart';
 
 const api = 'e27fd40294c9e10efeeaf71a4761ef30';
 
@@ -11,35 +12,24 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
 double? lat;
 double? long;
 
-Future<void> getlocation() async {
+Future<void> getLocationData() async {
   Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high);
   lat = position.latitude;
   long = position.longitude;
   print(lat);
   print(long);
-
-  getData();
+  NetWorkHelper netWorkHelper = NetWorkHelper(
+      'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$api');
+  var weatherData = await netWorkHelper.getData();
 }
 
 @override
 void initState() {
-  getlocation();
-}
-
-void getData() async {
-
-  Response response = await get(Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$api'));
-  if (response.statusCode == 200) {
-    print(response.body);
-  } else {
-    print(response.statusCode);
-  }
+  getLocationData();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -47,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
 
-    getlocation();
+    getLocationData();
   }
 
   @override
@@ -56,9 +46,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(),
       body: Center(
         child: ElevatedButton(
-            child: const Text('Click'),
+            child: const Text('l'),
             onPressed: () {
-              
               // getlocation();
             }),
       ),
