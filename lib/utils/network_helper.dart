@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:weather_forcast_app/utils/json_data.dart';
 
 class NetWorkHelper {
   final String url;
@@ -11,10 +12,9 @@ class NetWorkHelper {
   Future getData() async {
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      String data = response.body;
+      var data = jsonDecode(response.body);
       print(data);
-      var lon = jsonDecode(data)['coord']['lon'];
-      print(lon);
+      return WeatherData.fromJson(data);
     } else {
       print(response.statusCode);
     }
