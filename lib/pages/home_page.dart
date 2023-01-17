@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var suntime;
   late final Future<WeatherData> client;
   double? lat;
   double? long;
@@ -39,57 +40,51 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      backgroundColor: Colors.cyan.shade200,
       body: FutureBuilder(
         future: client,
         builder: ((context, snapshot) {
           return snapshot.connectionState == ConnectionState.done
               ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Center(
                       child: Text(
-                        "${snapshot.data!.sunrise}",
+                        'Temperature: ${snapshot.data!.temp}°c',
                         style: const TextStyle(fontSize: 25),
                       ),
                     ),
                     Center(
                       child: Text(
-                        "${snapshot.data!.sunset}",
+                        'City: ${snapshot.data!.cityName}',
                         style: const TextStyle(fontSize: 25),
                       ),
                     ),
                     Center(
                       child: Text(
-                        "${snapshot.data!.cityName}",
+                        'Min Temperature: ${snapshot.data!.minTemp}°c',
                         style: const TextStyle(fontSize: 25),
-                      ),
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: "Enter City Name",
-                      ),
-                    ),
-                    const Center(
-                      child: Text(
-                        "Temp",
-                        style: TextStyle(fontSize: 25),
-                      ),
-                    ),
-                    const Center(
-                      child: Text(
-                        "Temp",
-                        style: TextStyle(fontSize: 25),
-                      ),
-                    ),
-                    const Center(
-                      child: Text(
-                        "Temp",
-                        style: TextStyle(fontSize: 25),
                       ),
                     ),
                     Center(
                       child: Text(
-                        "${snapshot.data!.temp}",
+                        ' Max Temperature: ${snapshot.data!.maxTemp}°c',
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'description: ${snapshot.data!.description}',
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'description: ${snapshot.data!.description}',
                         style: const TextStyle(fontSize: 25),
                       ),
                     ),
@@ -100,6 +95,7 @@ class _HomePageState extends State<HomePage> {
                 );
         }),
       ),
+      drawer: const Drawer(),
     );
   }
 }
