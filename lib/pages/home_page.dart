@@ -20,6 +20,10 @@ class _HomePageState extends State<HomePage> {
   Future<WeatherData> getLocationData() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+    // lat = position.latitude;
+    // long = position.longitude;
+    // print(lat);
+    // print(long);
 
     NetWorkHelper netWorkHelper = NetWorkHelper(
         'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$api&units=metric');
@@ -42,6 +46,18 @@ class _HomePageState extends State<HomePage> {
           return snapshot.connectionState == ConnectionState.done
               ? Column(
                   children: [
+                    Center(
+                      child: Text(
+                        "${snapshot.data!.sunrise}",
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        "${snapshot.data!.sunset}",
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    ),
                     Center(
                       child: Text(
                         "${snapshot.data!.cityName}",
